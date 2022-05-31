@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import Counter from "../components/Counter";
 import { decrease, increase } from "../modules/counter";
+import { bindActionCreators } from "redux";
 
 // 리덕스 스토어와 연동된 컴포넌트를 컨테이너 컴포넌트라고 부른다.
 const CounterContainer = ({ number, increase, decrease }) => {
@@ -19,17 +20,14 @@ export default connect(
   (state) => ({
     number: state.counter.number,
   }),
-  (dispatch) => ({
-    // 임시 함수
-    increase: () => {
-      dispatch(increase()); // 디스패치
-      console.log("increase");
-    },
-    decrease: () => {
-      dispatch(decrease()); // 디스패치
-      console.log("decrease");
-    },
-  })
+  (dispatch) =>
+    bindActionCreators(
+      {
+        increase,
+        decrease,
+      },
+      dispatch
+    )
 )(CounterContainer);
 // mapStateToProps 와 mapDispatchToProps 에서 반환하는 객체 내부의 값들은 컴포넌트의 props 로 전달된다.
 // mapStateToProps 는 state 를 파라미터로 받아 오며, 이 값은 현재 스토어가 지니고 있는 상태를 가리킨다.
